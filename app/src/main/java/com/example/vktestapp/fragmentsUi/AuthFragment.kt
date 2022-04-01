@@ -22,15 +22,15 @@ class AuthFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAuthBinding.inflate(layoutInflater)
-        binding.authWebView.loadUrl("https://oauth.vk.com/authorize?client_id=8110024&response_type=token")
-        binding.authWebView.canGoForward()
-        binding.authWebView.webViewClient = object : WebViewClient() {
+
+        val webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
 
                 view.loadUrl(url)
+                //Я еще получение токена переделаю, тут так пока что чтобы просто посмотреть как работает апи в приложении
                 if(url.contains("/blank.html")){
                     println(url)
-                  val apiKey = getApiKeyFromUrl(url)
+                    val apiKey = getApiKeyFromUrl(url)
                     val id = getIdFromUrl(url)
 
                     val transition = AuthFragmentDirections.actionAuthFragmentToListFragment(apiKey, id)
@@ -39,6 +39,13 @@ class AuthFragment : Fragment() {
                 return true
             }
         }
+
+        binding.authWebView.apply {
+            loadUrl("https://oauth.vk.com/authorize?client_id=8110024&response_type=token")
+            canGoForward()
+            setWebViewClient(webViewClient)
+        }
+
 
         return binding.root
     }
