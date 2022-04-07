@@ -5,14 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.vktestapp.FriendListAdapter
+import com.example.vktestapp.adapters.FriendListAdapter
 import com.example.vktestapp.databinding.FragmentMainBinding
 import com.example.vktestapp.viewModel.MainViewModel
 import com.example.vktestapp.viewModel.VkRequestState

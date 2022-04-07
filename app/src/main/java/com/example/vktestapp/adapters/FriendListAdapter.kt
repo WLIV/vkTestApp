@@ -1,4 +1,4 @@
-package com.example.vktestapp
+package com.example.vktestapp.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

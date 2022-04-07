@@ -1,4 +1,4 @@
-package com.example.vktestapp
+package com.example.vktestapp.adapters
 
 import androidx.recyclerview.widget.RecyclerView
 import com.example.vktestapp.databinding.FriendRowBinding
