@@ -8,7 +8,11 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.example.vktestapp.R
 import com.example.vktestapp.databinding.FragmentAuthBinding
+import com.vk.api.sdk.VK
+import com.vk.api.sdk.auth.VKAuthenticationResult
+import com.vk.api.sdk.auth.VKScope
 
 
 class AuthFragment : Fragment() {
@@ -23,28 +27,25 @@ class AuthFragment : Fragment() {
     ): View {
         binding = FragmentAuthBinding.inflate(layoutInflater)
 
-        val webViewClient = object : WebViewClient() {
-            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-
-                view.loadUrl(url)
-                //Я еще получение токена переделаю, тут так пока что чтобы просто посмотреть как работает апи в приложении
-                if(url.contains("/blank.html")){
-                    println(url)
-                    val apiKey = getApiKeyFromUrl(url)
-                    val id = getIdFromUrl(url)
-
-                    val transition = AuthFragmentDirections.actionAuthFragmentToListFragment(apiKey, id)
-                    view.findNavController().navigate(transition)
+        val authLauncher = requireActivity().let {
+            VK.login(it) { result : VKAuthenticationResult ->
+                when (result) {
+                    is VKAuthenticationResult.Success -> {
+                        val apiKey = result.token.accessToken
+                        val transition = AuthFragmentDirections.actionAuthFragmentToListFragment(
+                            apiKey,
+                            requireContext().resources.getString(R.string.app_id)
+                        )
+                        binding.root.findNavController().navigate(transition)
+                    }
+                    is VKAuthenticationResult.Failed -> {
+                        // User didn't pass authorization
+                    }
                 }
-                return true
             }
         }
 
-        binding.authWebView.apply {
-            loadUrl("https://oauth.vk.com/authorize?client_id=8110024&response_type=token")
-            canGoForward()
-            setWebViewClient(webViewClient)
-        }
+        authLauncher.launch(arrayListOf(VKScope.FRIENDS))
 
 
         return binding.root

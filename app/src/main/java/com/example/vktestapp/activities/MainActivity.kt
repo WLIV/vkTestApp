@@ -14,9 +14,11 @@ import org.koin.core.context.startKoin
 import org.koin.dsl.module
 
 
-class MainActivity : AppCompatActivity() {
+class
+MainActivity : AppCompatActivity() {
     init {
         val myModule = module {
+
             viewModel { MainViewModel() }
         }
         startKoin {
